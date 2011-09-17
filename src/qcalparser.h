@@ -39,7 +39,7 @@ public:
     QList<QCalEvent*> getEventList();
 
 private:
-    QList<QCalEvent*> *m_event;
+    QList<QCalEvent*> m_eventList;
     QFile *m_file;
     void insertQCalEvent();
     void parseICalFile();

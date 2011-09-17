@@ -33,6 +33,8 @@ QCalParser::QCalParser(QFile *iCalFile, QObject *parent) :
 {
     Q_ASSERT(iCalFile->open(QIODevice::ReadOnly | QIODevice::Text));
 
+    m_eventList.clear();
+
     m_file = iCalFile;
     parseICalFile();
 
@@ -76,6 +78,7 @@ void QCalParser::parseICalBlock()
             event->setRoomName(line.right(11));
         }
     }while(!line.contains(QByteArray("END:VEVENT")));
+    m_eventList.append(event);
 }
 
 QDateTime QCalParser::convertStringToStartDate(QString line)
@@ -98,4 +101,9 @@ QDateTime QCalParser::convertStringToEndDate(QString line)
     int minutes = line.mid(17, 2).toInt();
     int seconds = line.mid(19, 2).toInt();
     return QDateTime(QDate(year, month, day),QTime(hours, minutes, seconds));
+}
+
+QList <QCalEvent*> QCalParser::getEventList()
+{
+    return m_eventList;
 }
