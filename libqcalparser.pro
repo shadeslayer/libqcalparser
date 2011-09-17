@@ -11,12 +11,12 @@ TEMPLATE = lib
 
 DEFINES += LIBQCALPARSER_LIBRARY
 
-SOURCES += qcalparser.cpp \
-    qcalevent.cpp
+SOURCES += src/qcalparser.cpp \
+    src/qcalevent.cpp
 
-HEADERS += qcalparser.h\
-        libqcalparser_global.h \
-    qcalevent.h
+HEADERS += src/qcalparser.h\
+        src/libqcalparser_global.h \
+    src/qcalevent.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
