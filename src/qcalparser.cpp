@@ -116,7 +116,7 @@ void QCalParser::parseBlock()
     m_eventList.append(event);
 }
 
-QList <QCalEvent *> QCalParser::getEventList()
+QList <QCalEvent *> QCalParser::eventList()
 {
     return m_eventList;
 }

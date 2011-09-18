@@ -39,7 +39,7 @@ public:
     bool parse(const QByteArray &data);
     bool parse(QFile *file);
 
-    QList<QCalEvent *> getEventList();
+    QList<QCalEvent *> eventList();
 
 private:
     void parse();
