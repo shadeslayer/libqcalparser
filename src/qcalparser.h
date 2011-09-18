@@ -45,8 +45,6 @@ private:
     void insertQCalEvent();
     void parseICalFile();
     void parseICalBlock();
-    QDateTime convertStringToStartDate(const QString &line);
-    QDateTime convertStringToEndDate(const QString &line);
 };
 
 #endif // QCALPARSER_H

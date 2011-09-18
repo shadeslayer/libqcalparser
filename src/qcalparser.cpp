@@ -64,9 +64,9 @@ void QCalParser::parseICalBlock()
         if(line.startsWith(QLatin1String("UID:"))) {
             event->setUid(line.section(QLatin1Char(':'), 1));
         } else if (line.startsWith(QLatin1String("DTSTART:"))){
-           event->setStartDate(convertStringToStartDate(line));
+           event->setStartDate(QDateTime::fromString(line, "'DTSTART:'yyyyMMdd'T'hhmmss'Z'"));
         } else if (line.startsWith(QLatin1String("DTEND:"))){
-            event->setStartDate(convertStringToEndDate(line));
+            event->setStopDate(QDateTime::fromString(line, "'DTEND:'yyyyMMdd'T'hhmmss'Z'"));
         } else if (line.startsWith(QLatin1String("CATEGORIES:"))) {
             event->setCategories(line.section(QLatin1Char(':'), 1).split(" " || ",", QString::SkipEmptyParts));
         } else if (line.startsWith(QLatin1String("SUMMARY:"))) {
@@ -84,28 +84,6 @@ void QCalParser::parseICalBlock()
         }
     }while(!line.contains(QByteArray("END:VEVENT")));
     m_eventList.append(event);
-}
-
-QDateTime QCalParser::convertStringToStartDate(const QString &line)
-{
-    int year = line.mid(8, 4).toInt();
-    int month = line.mid(12, 2).toInt();
-    int day = line.mid(14, 2).toInt();
-    int hours = line.mid(17, 2).toInt();
-    int minutes = line.mid(19, 2).toInt();
-    int seconds = line.mid(21, 2).toInt();
-    return QDateTime(QDate(year, month, day), QTime(hours, minutes, seconds), Qt::UTC);
-}
-
-QDateTime QCalParser::convertStringToEndDate(const QString &line)
-{
-    int year = line.mid(5, 4).toInt();
-    int month = line.mid(10, 2).toInt();
-    int day = line.mid(12, 2).toInt();
-    int hours = line.mid(15, 2).toInt();
-    int minutes = line.mid(17, 2).toInt();
-    int seconds = line.mid(19, 2).toInt();
-    return QDateTime(QDate(year, month, day), QTime(hours, minutes, seconds), Qt::UTC);
 }
 
 QList <QCalEvent*> QCalParser::getEventList()
