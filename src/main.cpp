@@ -30,7 +30,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     QFile *file = new QFile(a.arguments().at(1));
-    QCalParser *parser = new QCalParser(file);
+    QCalParser *parser = new QCalParser;
+    parser->parse(file);
     foreach(QCalEvent* event, parser->getEventList()) {
         qDebug() << event->eventUID();
         qDebug() << event->categoryList();
