@@ -60,19 +60,19 @@ bool QCalParser::parse(QFile *file)
     return true;
 }
 
+void QCalParser::parse()
 {
     QString line = m_dataStream->readLine();
     while(!line.isNull()) {
         if(line.contains("BEGIN:VEVENT")) {
-          parseICalBlock();
+          parseBlock();
         }
 
         line = m_dataStream->readLine();
-
     };
 }
 
-void QCalParser::parseICalBlock()
+void QCalParser::parseBlock()
 {
     QCalEvent *event = new QCalEvent(this);
     QString line;

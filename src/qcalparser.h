@@ -42,11 +42,11 @@ public:
     QList<QCalEvent *> getEventList();
 
 private:
-    QList<QCalEvent*> m_eventList;
+    void parse();
+    void parseBlock();
+
+    QList<QCalEvent *> m_eventList;
     QTextStream *m_dataStream;
-    void insertQCalEvent();
-    void parseICalFile();
-    void parseICalBlock();
 };
 
 #endif // QCALPARSER_H
