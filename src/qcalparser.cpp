@@ -24,6 +24,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
+#include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
 #include "qcalevent.h"
@@ -79,40 +80,20 @@ void QCalParser::parseBlock()
 {
     QCalEvent *event = new QCalEvent(this);
     QString line;
-    do {
-        line = m_dataStream->readLine();
-        if(line.startsWith(QLatin1String("UID:"))) {
-            event->setUid(line.section(QLatin1Char(':'), 1));
+    while (!(line = m_dataStream->readLine()).contains(QByteArray("END:VEVENT"))) {
+        const int deliminatorPosition = line.indexOf(QChar(':'));
+        const QString key   = line.mid(0, deliminatorPosition);
+        const QString value = line.mid(deliminatorPosition + 1, -1);
+
+        if (key == QLatin1String("DTSTART") || key == QLatin1String("DTEND")) {
+            event->setProperty(key, QDateTime::fromString(value, "yyyyMMdd'T'hhmmss'Z'"));
             continue;
-        } else if (line.startsWith(QLatin1String("DTSTART:"))) {
-            event->setStartDate(QDateTime::fromString(line, "'DTSTART:'yyyyMMdd'T'hhmmss'Z'"));
-            continue;
-        } else if (line.startsWith(QLatin1String("DTEND:"))) {
-            event->setStopDate(QDateTime::fromString(line, "'DTEND:'yyyyMMdd'T'hhmmss'Z'"));
-            continue;
-        } else if (line.startsWith(QLatin1String("CATEGORIES:"))) {
-            event->setCategories(line.section(QLatin1Char(':'), 1).split(" " || ",", QString::SkipEmptyParts));
-            continue;
-        } else if (line.startsWith(QLatin1String("SUMMARY:"))) {
-            event->setSummary(line.section(QLatin1Char(':'), 1));
-            continue;
-        } else if (line.startsWith(QLatin1String("LOCATION:"))) {
-            event->setLocation(line.section(QLatin1Char(':'), 1));
-            continue;
-        } else if (line.startsWith(QLatin1String("DESCRIPTION:"))) {
-            event->setDescription(line.section(QLatin1Char(':'), 1));
-            continue;
-        } else if (line.startsWith(QLatin1String("URL:"))) {
-            event->setEventUrl(line.section(QLatin1Char(':'), 1));
-            continue;
-        } else if (line.startsWith(QLatin1String("X-TYPE:"))) {
-            event->setEvpentUrlType(line.section(QLatin1Char(':'), 1));
-            continue;
-        } else if (line.startsWith(QLatin1String("X-ROOMNAME:"))) {
-            event->setRoomName(line.section(QLatin1Char(':'), 1));
-            continue;
+        } else if (key == QLatin1String("CATEGORIES")) {
+            event->setProperty(key, value.split(" " || ",", QString::SkipEmptyParts));
+        } else {
+            event->setProperty(key, value);
         }
-    } while (!line.contains(QByteArray("END:VEVENT")));
+    }
     m_eventList.append(event);
 }
 

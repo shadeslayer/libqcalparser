@@ -1,7 +1,7 @@
 /*
  * This file is part of libqcalparser
  *
- * Copyright (C) Rohan Garg <rohan16garg@gmail.com>
+ * Copyright (C) 2011 Harald Sitter <apachelogger@ubuntu.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,6 @@
 
 #include "qcalevent.h"
 
-
 QCalEvent::QCalEvent(QObject *parent) :
     QObject(parent)
 {
@@ -30,102 +29,13 @@ QCalEvent::~QCalEvent()
 {
 }
 
-QString QCalEvent::eventUID()
+QDebug operator<<(QDebug dbg, const QCalEvent &c)
 {
-    return m_uid;
-}
+    dbg.nospace() << "QCalEvent(\n";
+    foreach (const QString &key, c.propertyNames()) {
+        dbg.nospace() << "    " << key << ": " << c.property(key) << "\n";
+    }
+    dbg.nospace() << ")\n";
 
-QDateTime QCalEvent::eventStartDate()
-{
-    return m_startDate;
-}
-
-QDateTime QCalEvent::eventStopDate()
-{
-    return m_stopDate;
-}
-
-QStringList QCalEvent::categoryList()
-{
-    return m_categories;
-}
-
-QString QCalEvent::eventSummary()
-{
-    return m_summary;
-}
-
-QString QCalEvent::eventLocation()
-{
-    return m_location;
-}
-
-QString QCalEvent::eventDescription()
-{
-    return m_description;
-}
-
-QUrl QCalEvent::eventUrl()
-{
-    return m_eventUrl;
-}
-
-QString QCalEvent::eventUrlType()
-{
-    return m_eventUrlType;
-}
-
-QString QCalEvent::eventRoomName()
-{
-    return m_roomName;
-}
-
-void QCalEvent::setUid(const QString &uid)
-{
-    m_uid = uid;
-}
-
-void QCalEvent::setStartDate(const QDateTime &date)
-{
-    m_startDate = date;
-}
-
-void QCalEvent::setStopDate(const QDateTime &date)
-{
-    m_stopDate = date;
-}
-
-void QCalEvent::setCategories(const QStringList &categories)
-{
-    m_categories = categories;
-}
-
-void QCalEvent::setSummary(const QString &summary)
-{
-    m_summary = summary;
-}
-
-void QCalEvent::setLocation(const QString &location)
-{
-    m_location = location;
-}
-
-void QCalEvent::setDescription(const QString &description)
-{
-    m_description = description;
-}
-
-void QCalEvent::setEventUrl(const QUrl &eventUrl)
-{
-    m_eventUrl = eventUrl;
-}
-
-void QCalEvent::setEvpentUrlType(const QString &eventUrlType)
-{
-    m_eventUrlType = eventUrlType;
-}
-
-void QCalEvent::setRoomName(const QString &roomName)
-{
-    m_roomName = roomName;
+    return dbg.space();
 }

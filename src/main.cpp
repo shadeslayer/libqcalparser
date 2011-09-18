@@ -21,6 +21,7 @@
 #include "qcalparser.h"
 #include "qcalevent.h"
 
+#include <QtCore>
 #include <QtCore/QCoreApplication>
 #include <QFile>
 #include <QString>
@@ -33,15 +34,7 @@ int main(int argc, char *argv[])
     QCalParser *parser = new QCalParser;
     parser->parse(file);
     foreach(QCalEvent *event, parser->eventList()) {
-        qDebug() << event->eventUID();
-        qDebug() << event->categoryList();
-        qDebug() << event->eventDescription();
-        qDebug() << event->eventUrl();
-        qDebug() << event->eventUrlType();
-        qDebug() << event->eventLocation();
-        qDebug() << event->eventRoomName();
-        qDebug() << event->eventStartDate();
-        qDebug() << event->eventStopDate();
+        qDebug() << (*event);
      }
     delete parser;
     delete file;

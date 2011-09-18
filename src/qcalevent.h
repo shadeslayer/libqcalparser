@@ -2,6 +2,7 @@
  * This file is part of libqcalparser
  *
  * Copyright (C) Rohan Garg <rohan16garg@gmail.com>
+ * Copyright (C) 2011 Harald Sitter <apachelogger@ubuntu.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,53 +22,55 @@
 #ifndef QCALEVENT_H
 #define QCALEVENT_H
 
-#include <QtCore/QDateTime>
+#include <QtCore/QDebug>
+#include <QtCore/QMetaProperty>
 #include <QtCore/QObject>
-#include <QtCore/QStringList>
-#include <QtCore/QUrl>
+#include <QtCore/QVariant>
+
+#define E_PROPERTY(name) QVariant name() const { return QObject::property(#name); }
 
 class QCalEvent : public QObject
 {
     Q_OBJECT
-
+    Q_PROPERTY(QVariant uid READ uid)
+    Q_PROPERTY(QVariant dtstart READ dtstart)
+    Q_PROPERTY(QVariant dtend READ dtend)
+    Q_PROPERTY(QVariant categories READ categories)
+    Q_PROPERTY(QVariant summary READ summary)
+    Q_PROPERTY(QVariant location READ location)
+    Q_PROPERTY(QVariant description READ description)
+    Q_PROPERTY(QVariant url READ url)
 public:
     explicit QCalEvent(QObject *parent = 0);
     virtual ~QCalEvent();
 
-    QString eventUID();
-    QDateTime eventStartDate();
-    QDateTime eventStopDate();
-    QStringList categoryList();
-    QString eventSummary();
-    QString eventLocation();
-    QString eventDescription();
-    QUrl eventUrl();
-    QString eventUrlType();
-    QString eventRoomName();
+    E_PROPERTY(uid)
+    E_PROPERTY(dtstart)
+    E_PROPERTY(dtend)
+    E_PROPERTY(categories)
+    E_PROPERTY(summary)
+    E_PROPERTY(location)
+    E_PROPERTY(description)
+    E_PROPERTY(url)
 
-    void setUid(const QString &uid);
-    void setStartDate(const QDateTime &date);
-    void setStopDate(const QDateTime &date);
-    void setCategories(const QStringList &categories);
-    void setSummary(const QString &summary);
-    void setLocation(const QString &location);
-    void setDescription(const QString &description);
-    void setEventUrl(const QUrl &eventUrl);
-    void setEvpentUrlType(const QString &eventUrlType);
-    void setRoomName(const QString &roomName);
+    Q_INVOKABLE void setProperty(const QString &iCalKey, const QVariant &value)
+    {
+        QString key = iCalKey.toLower().replace(QChar('-'), QChar('_'));
+        qDebug() << key << value;
+        m_properties.insert(key, value);
+    }
 
- private:
-    QString m_uid;
-    QDateTime m_startDate;
-    QDateTime m_stopDate;
-    QStringList m_categories;
-    QString m_summary;
-    QString m_location;
-    QString m_description;
-    QUrl m_eventUrl;
-    QString m_eventUrlType;
-    QString m_roomName;
+    Q_INVOKABLE QVariant property(const char *key) const { return property(QString(key)); }
+    Q_INVOKABLE QVariant property(const QString &key) const { return m_properties.value(key); }
 
+    QList<QString> propertyNames() const { return m_properties.keys(); }
+
+private:
+    QVariantMap m_properties;
 };
+
+QDebug operator<<(QDebug dbg, const QCalEvent &c);
+
+#undef E_PROPERTY
 
 #endif // QCALEVENT_H
