@@ -39,7 +39,7 @@ QCalParser::QCalParser(QFile *iCalFile, QObject *parent) :
 
     m_dataStream = new QTextStream(iCalFile);
     parseICalFile();
-
+    iCalFile->close();
 }
 
 void QCalParser::parseICalFile()

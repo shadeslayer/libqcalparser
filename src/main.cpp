@@ -42,5 +42,7 @@ int main(int argc, char *argv[])
         qDebug() << event->eventStartDate();
         qDebug() << event->eventStopDate();
      }
+    delete parser;
+    delete file;
 }
 
