@@ -29,15 +29,18 @@
 #include "qcalevent.h"
 
 QCalParser::QCalParser(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    m_dataStream(0)
 {
-
 }
 
 QCalParser::~QCalParser()
 {
-    delete m_dataStream;
+    if (m_dataStream)
+        delete m_dataStream;
 }
+
+#warning FIXME datstream looses mem if parse is called multiple times
 
 bool QCalParser::parse(const QByteArray &data)
 {
@@ -65,7 +68,7 @@ void QCalParser::parse()
     QString line = m_dataStream->readLine();
     while(!line.isNull()) {
         if(line.contains("BEGIN:VEVENT")) {
-          parseBlock();
+            parseBlock();
         }
 
         line = m_dataStream->readLine();
@@ -81,10 +84,10 @@ void QCalParser::parseBlock()
         if(line.startsWith(QLatin1String("UID:"))) {
             event->setUid(line.section(QLatin1Char(':'), 1));
             continue;
-        } else if (line.startsWith(QLatin1String("DTSTART:"))){
-           event->setStartDate(QDateTime::fromString(line, "'DTSTART:'yyyyMMdd'T'hhmmss'Z'"));
-           continue;
-        } else if (line.startsWith(QLatin1String("DTEND:"))){
+        } else if (line.startsWith(QLatin1String("DTSTART:"))) {
+            event->setStartDate(QDateTime::fromString(line, "'DTSTART:'yyyyMMdd'T'hhmmss'Z'"));
+            continue;
+        } else if (line.startsWith(QLatin1String("DTEND:"))) {
             event->setStopDate(QDateTime::fromString(line, "'DTEND:'yyyyMMdd'T'hhmmss'Z'"));
             continue;
         } else if (line.startsWith(QLatin1String("CATEGORIES:"))) {
