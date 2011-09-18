@@ -86,7 +86,7 @@ void QCalParser::parseICalBlock()
     m_eventList.append(event);
 }
 
-QDateTime QCalParser::convertStringToStartDate(QString line)
+QDateTime QCalParser::convertStringToStartDate(const QString &line)
 {
     int year = line.mid(8, 4).toInt();
     int month = line.mid(12, 2).toInt();
@@ -97,7 +97,7 @@ QDateTime QCalParser::convertStringToStartDate(QString line)
     return QDateTime(QDate(year, month, day), QTime(hours, minutes, seconds), Qt::UTC);
 }
 
-QDateTime QCalParser::convertStringToEndDate(QString line)
+QDateTime QCalParser::convertStringToEndDate(const QString &line)
 {
     int year = line.mid(5, 4).toInt();
     int month = line.mid(10, 2).toInt();
