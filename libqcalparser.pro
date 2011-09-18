@@ -36,3 +36,7 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+TARGET = qcalparser
+TEMPLATE = app
+SOURCES += src/main.cpp

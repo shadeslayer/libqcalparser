@@ -30,6 +30,7 @@ class QFile;
 class QDate;
 class QStringList;
 class QDateTime;
+class QTextStream;
 
 class LIBQCALPARSERSHARED_EXPORT QCalParser : public QObject {
     Q_OBJECT
@@ -40,7 +41,7 @@ public:
 
 private:
     QList<QCalEvent*> m_eventList;
-    QFile *m_file;
+    QTextStream *m_dataStream;
     void insertQCalEvent();
     void parseICalFile();
     void parseICalBlock();

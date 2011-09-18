@@ -26,6 +26,8 @@
 //Qt includes
 #include <QFile>
 #include <QDateTime>
+#include <QDebug>
+#include <QTextStream>
 
 
 QCalParser::QCalParser(QFile *iCalFile, QObject *parent) :
@@ -35,47 +37,50 @@ QCalParser::QCalParser(QFile *iCalFile, QObject *parent) :
 
     m_eventList.clear();
 
-    m_file = iCalFile;
+    m_dataStream = new QTextStream(iCalFile);
     parseICalFile();
 
 }
 
 void QCalParser::parseICalFile()
 {
-    do {
-        parseICalBlock();
-    }while(m_file->readLine().contains(QByteArray("END:VCALENDAR")));
+    QString line = m_dataStream->readLine();
+    while(!line.isNull()) {
+        if(line.contains("BEGIN:VEVENT")) {
+          parseICalBlock();
+        }
+
+        line = m_dataStream->readLine();
+
+    };
 }
 
 void QCalParser::parseICalBlock()
 {
-    do {
-    } while(m_file->readLine().contains(QByteArray("BEGIN:VEVENT")));
-
     QCalEvent *event = new QCalEvent(this);
     QString line;
     do {
-        line = QString(m_file->readLine());
+        line = m_dataStream->readLine();
         if(line.startsWith(QLatin1String("UID:"))) {
-            event->setUid(line.right(4));
+            event->setUid(line.section(QLatin1Char(':'), 1));
         } else if (line.startsWith(QLatin1String("DTSTART:"))){
            event->setStartDate(convertStringToStartDate(line));
         } else if (line.startsWith(QLatin1String("DTEND:"))){
             event->setStartDate(convertStringToEndDate(line));
         } else if (line.startsWith(QLatin1String("CATEGORIES:"))) {
-            event->setCategories(line.right(11).split(" " || ",", QString::SkipEmptyParts));
+            event->setCategories(line.section(QLatin1Char(':'), 1).split(" " || ",", QString::SkipEmptyParts));
         } else if (line.startsWith(QLatin1String("SUMMARY:"))) {
-            event->setSummary(line.right(13));
+            event->setSummary(line.section(QLatin1Char(':'), 1));
         } else if (line.startsWith(QLatin1String("LOCATION:"))) {
-            event->setLocation(line.right(9));
+            event->setLocation(line.section(QLatin1Char(':'), 1));
         } else if (line.startsWith(QLatin1String("DESCRIPTION:"))) {
-            event->setDescription(line.right(12));
+            event->setDescription(line.section(QLatin1Char(':'), 1));
         } else if (line.startsWith(QLatin1String("URL:"))) {
-            event->setEventUrl(line.right(4));
+            event->setEventUrl(line.section(QLatin1Char(':'), 1));
         } else if (line.startsWith(QLatin1String("X-TYPE:"))) {
-            event->setEvpentUrlType(line.right(7));
+            event->setEvpentUrlType(line.section(QLatin1Char(':'), 1));
         } else if (line.startsWith(QLatin1String("X-ROOMNAME:"))) {
-            event->setRoomName(line.right(11));
+            event->setRoomName(line.section(QLatin1Char(':'), 1));
         }
     }while(!line.contains(QByteArray("END:VEVENT")));
     m_eventList.append(event);
@@ -83,13 +88,13 @@ void QCalParser::parseICalBlock()
 
 QDateTime QCalParser::convertStringToStartDate(QString line)
 {
-    int year = line.mid(7, 4).toInt();
+    int year = line.mid(8, 4).toInt();
     int month = line.mid(12, 2).toInt();
     int day = line.mid(14, 2).toInt();
     int hours = line.mid(17, 2).toInt();
     int minutes = line.mid(19, 2).toInt();
     int seconds = line.mid(21, 2).toInt();
-    return QDateTime(QDate(year, month, day),QTime(hours, minutes, seconds));
+    return QDateTime(QDate(year, month, day), QTime(hours, minutes, seconds), Qt::UTC);
 }
 
 QDateTime QCalParser::convertStringToEndDate(QString line)
@@ -100,7 +105,7 @@ QDateTime QCalParser::convertStringToEndDate(QString line)
     int hours = line.mid(15, 2).toInt();
     int minutes = line.mid(17, 2).toInt();
     int seconds = line.mid(19, 2).toInt();
-    return QDateTime(QDate(year, month, day),QTime(hours, minutes, seconds));
+    return QDateTime(QDate(year, month, day), QTime(hours, minutes, seconds), Qt::UTC);
 }
 
 QList <QCalEvent*> QCalParser::getEventList()

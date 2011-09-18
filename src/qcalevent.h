@@ -33,39 +33,39 @@ class QCalEvent : public QObject
 public:
     explicit QCalEvent(QObject *parent = 0);
 
-    QString getUid();
-    QDateTime getStartDate();
-    QDateTime getStopDate();
-    QStringList getCategories();
-    QString getSummary();
-    QString getLocation();
-    QString getDescription();
-    QUrl getEventUrl();
-    QString getEventUrlType();
-    QString getRoomName();
+    QString eventUID();
+    QDateTime eventStartDate();
+    QDateTime eventStopDate();
+    QStringList categoryList();
+    QString eventSummary();
+    QString eventLocation();
+    QString eventDescription();
+    QUrl eventUrl();
+    QString eventUrlType();
+    QString eventRoomName();
 
-    void setUid(QString uid);
-    void setStartDate(QDateTime date);
-    void setStopDate(QDateTime date);
-    void setCategories(QStringList categories);
-    void setSummary(QString summary);
-    void setLocation(QString location);
-    void setDescription(QString description);
-    void setEventUrl(QUrl eventUrl);
-    void setEvpentUrlType(QString eventUrlType);
-    void setRoomName(QString roomName);
+    void setUid(const QString &uid);
+    void setStartDate(const QDateTime &date);
+    void setStopDate(const QDateTime &date);
+    void setCategories(const QStringList &categories);
+    void setSummary(const QString &summary);
+    void setLocation(const QString &location);
+    void setDescription(const QString &description);
+    void setEventUrl(const QUrl &eventUrl);
+    void setEvpentUrlType(const QString &eventUrlType);
+    void setRoomName(const QString &roomName);
 
  private:
     QString m_uid;
     QDateTime m_startDate;
     QDateTime m_stopDate;
     QStringList   m_categories;
-    QString   m_summary;
-    QString   m_location;
-    QString   m_description;
-    QUrl      m_eventUrl;
-    QString   m_eventUrlType;
-    QString   m_roomName;
+    QString    m_summary;
+    QString    m_location;
+    QString    m_description;
+    QUrl       m_eventUrl;
+    QString    m_eventUrlType;
+    QString    m_roomName;
 
 };
 

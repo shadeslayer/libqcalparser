@@ -26,102 +26,102 @@ QCalEvent::QCalEvent(QObject *parent) :
 {
 }
 
-QString QCalEvent::getUid()
+QString QCalEvent::eventUID()
 {
     return m_uid;
 }
 
-QDateTime QCalEvent::getStartDate()
+QDateTime QCalEvent::eventStartDate()
 {
     return m_startDate;
 }
 
-QDateTime QCalEvent::getStopDate()
+QDateTime QCalEvent::eventStopDate()
 {
     return m_stopDate;
 }
 
-QStringList QCalEvent::getCategories()
+QStringList QCalEvent::categoryList()
 {
     return m_categories;
 }
 
-QString QCalEvent::getSummary()
+QString QCalEvent::eventSummary()
 {
     return m_summary;
 }
 
-QString QCalEvent::getLocation()
+QString QCalEvent::eventLocation()
 {
     return m_location;
 }
 
-QString QCalEvent::getDescription()
+QString QCalEvent::eventDescription()
 {
     return m_description;
 }
 
-QUrl QCalEvent::getEventUrl()
+QUrl QCalEvent::eventUrl()
 {
     return m_eventUrl;
 }
 
-QString QCalEvent::getEventUrlType()
+QString QCalEvent::eventUrlType()
 {
     return m_eventUrlType;
 }
 
-QString QCalEvent::getRoomName()
+QString QCalEvent::eventRoomName()
 {
     return m_roomName;
 }
 
-void QCalEvent::setUid(QString uid)
+void QCalEvent::setUid(const QString &uid)
 {
     m_uid = uid;
 }
 
-void QCalEvent::setStartDate(QDateTime date)
+void QCalEvent::setStartDate(const QDateTime &date)
 {
     m_startDate = date;
 }
 
-void QCalEvent::setStopDate(QDateTime date)
+void QCalEvent::setStopDate(const QDateTime &date)
 {
     m_stopDate = date;
 }
 
-void QCalEvent::setCategories(QStringList categories)
+void QCalEvent::setCategories(const QStringList &categories)
 {
     m_categories = categories;
 }
 
-void QCalEvent::setSummary(QString summary)
+void QCalEvent::setSummary(const QString &summary)
 {
     m_summary = summary;
 }
 
-void QCalEvent::setLocation(QString location)
+void QCalEvent::setLocation(const QString &location)
 {
     m_location = location;
 }
 
-void QCalEvent::setDescription(QString description)
+void QCalEvent::setDescription(const QString &description)
 {
     m_description = description;
 }
 
-void QCalEvent::setEventUrl(QUrl eventUrl)
+void QCalEvent::setEventUrl(const QUrl &eventUrl)
 {
     m_eventUrl = eventUrl;
 }
 
-void QCalEvent::setEvpentUrlType(QString eventUrlType)
+void QCalEvent::setEvpentUrlType(const QString &eventUrlType)
 {
     m_eventUrlType = eventUrlType;
 }
 
-void QCalEvent::setRoomName(QString roomName)
+void QCalEvent::setRoomName(const QString &roomName)
 {
     m_roomName = roomName;
 }
