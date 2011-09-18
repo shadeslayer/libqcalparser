@@ -21,10 +21,10 @@
 #ifndef QCALEVENT_H
 #define QCALEVENT_H
 
-#include <QObject>
-#include <QDateTime>
-#include <QStringList>
-#include <QUrl>
+#include <QtCore/QDateTime>
+#include <QtCore/QObject>
+#include <QtCore/QStringList>
+#include <QtCore/QUrl>
 
 class QCalEvent : public QObject
 {
@@ -32,6 +32,7 @@ class QCalEvent : public QObject
 
 public:
     explicit QCalEvent(QObject *parent = 0);
+    virtual ~QCalEvent();
 
     QString eventUID();
     QDateTime eventStartDate();
@@ -59,13 +60,13 @@ public:
     QString m_uid;
     QDateTime m_startDate;
     QDateTime m_stopDate;
-    QStringList   m_categories;
-    QString    m_summary;
-    QString    m_location;
-    QString    m_description;
-    QUrl       m_eventUrl;
-    QString    m_eventUrlType;
-    QString    m_roomName;
+    QStringList m_categories;
+    QString m_summary;
+    QString m_location;
+    QString m_description;
+    QUrl m_eventUrl;
+    QString m_eventUrlType;
+    QString m_roomName;
 
 };
 

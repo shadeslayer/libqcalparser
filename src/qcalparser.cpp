@@ -2,6 +2,7 @@
  * This file is part of libqcalparser
  *
  * Copyright (C) Rohan Garg <rohan16garg@gmail.com>
+ * Copyright (C) 2011 Harald Sitter <apachelogger@ubuntu.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,26 +21,17 @@
 
 #include "qcalparser.h"
 
-//Local includes
+#include <QtCore/QDateTime>
+#include <QtCore/QDebug>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+
 #include "qcalevent.h"
 
-//Qt includes
-#include <QFile>
-#include <QDateTime>
-#include <QDebug>
-#include <QTextStream>
-
-
-QCalParser::QCalParser(QFile *iCalFile, QObject *parent) :
+QCalParser::QCalParser(QObject *parent) :
     QObject(parent)
 {
-    Q_ASSERT(iCalFile->open(QIODevice::ReadOnly | QIODevice::Text));
 
-    m_eventList.clear();
-
-    m_dataStream = new QTextStream(iCalFile);
-    parseICalFile();
-    iCalFile->close();
 }
 
 QCalParser::~QCalParser()
@@ -47,7 +39,27 @@ QCalParser::~QCalParser()
     delete m_dataStream;
 }
 
-void QCalParser::parseICalFile()
+bool QCalParser::parse(const QByteArray &data)
+{
+    m_dataStream = new QTextStream(data);
+    parse();
+
+    return true;
+}
+
+bool QCalParser::parse(QFile *file)
+{
+    if (!file->isOpen()) {
+        if (!file->open(QIODevice::ReadOnly | QIODevice::Text))
+            return false;
+    }
+
+    m_dataStream = new QTextStream(file);
+    parse();
+
+    return true;
+}
+
 {
     QString line = m_dataStream->readLine();
     while(!line.isNull()) {
@@ -97,11 +109,11 @@ void QCalParser::parseICalBlock()
             event->setRoomName(line.section(QLatin1Char(':'), 1));
             continue;
         }
-    }while(!line.contains(QByteArray("END:VEVENT")));
+    } while (!line.contains(QByteArray("END:VEVENT")));
     m_eventList.append(event);
 }
 
-QList <QCalEvent*> QCalParser::getEventList()
+QList <QCalEvent *> QCalParser::getEventList()
 {
     return m_eventList;
 }

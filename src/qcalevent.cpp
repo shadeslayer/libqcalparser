@@ -26,6 +26,10 @@ QCalEvent::QCalEvent(QObject *parent) :
 {
 }
 
+QCalEvent::~QCalEvent()
+{
+}
+
 QString QCalEvent::eventUID()
 {
     return m_uid;

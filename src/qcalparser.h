@@ -23,22 +23,23 @@
 
 #include "libqcalparser_global.h"
 
-#include <QObject>
+#include <QtCore/QObject>
 
 class QCalEvent;
 class QFile;
-class QDate;
-class QStringList;
-class QDateTime;
 class QTextStream;
 
 class LIBQCALPARSERSHARED_EXPORT QCalParser : public QObject {
     Q_OBJECT
 
 public:
-    QCalParser(QFile *iCalFile = 0, QObject *parent = 0);
-    virtual ~QCalParser();
-    QList<QCalEvent*> getEventList();
+    QCalParser(QObject *parent = 0);
+    ~QCalParser();
+
+    bool parse(const QByteArray &data);
+    bool parse(QFile *file);
+
+    QList<QCalEvent *> getEventList();
 
 private:
     QList<QCalEvent*> m_eventList;
