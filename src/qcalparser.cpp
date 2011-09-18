@@ -81,7 +81,7 @@ void QCalParser::parseBlock()
     QCalEvent *event = new QCalEvent(this);
     QString line;
     while (!(line = m_dataStream->readLine()).contains(QByteArray("END:VEVENT"))) {
-        const int deliminatorPosition = line.indexOf(QChar(':'));
+        const int deliminatorPosition = line.indexOf(QLatin1Char(':'));
         const QString key   = line.mid(0, deliminatorPosition);
         const QString value = line.mid(deliminatorPosition + 1, -1);
 
