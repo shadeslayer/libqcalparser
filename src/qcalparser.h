@@ -37,6 +37,7 @@ class LIBQCALPARSERSHARED_EXPORT QCalParser : public QObject {
 
 public:
     QCalParser(QFile *iCalFile = 0, QObject *parent = 0);
+    virtual ~QCalParser();
     QList<QCalEvent*> getEventList();
 
 private:

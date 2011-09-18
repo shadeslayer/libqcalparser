@@ -42,6 +42,11 @@ QCalParser::QCalParser(QFile *iCalFile, QObject *parent) :
     iCalFile->close();
 }
 
+QCalParser::~QCalParser()
+{
+    delete m_dataStream;
+}
+
 void QCalParser::parseICalFile()
 {
     QString line = m_dataStream->readLine();
