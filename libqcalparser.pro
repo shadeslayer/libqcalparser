@@ -36,12 +36,3 @@ unix:!symbian {
     }
     INSTALLS += target
 }
-
-!isEmpty(LIBQCALPARSER_STATIC) {
-    CONFIG += staticlib
-} else {
-    TARGET = qcalparser
-    TEMPLATE = app
-    SOURCES += src/main.cpp
-}
-
