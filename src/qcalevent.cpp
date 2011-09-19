@@ -20,6 +20,8 @@
 
 #include "qcalevent.h"
 
+#include <QtCore/QDebug>
+
 QCalEvent::QCalEvent(QObject *parent) :
     QObject(parent)
 {

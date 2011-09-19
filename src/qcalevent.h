@@ -22,12 +22,11 @@
 #ifndef QCALEVENT_H
 #define QCALEVENT_H
 
-#include <QtCore/QDebug>
 #include <QtCore/QMetaProperty>
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 
-#define E_PROPERTY(name) QVariant name() const { return QObject::property(#name); }
+#define E_PROPERTY(name) QVariant name() const { return property(#name); }
 
 class QCalEvent : public QObject
 {
@@ -56,7 +55,6 @@ public:
     Q_INVOKABLE void setProperty(const QString &iCalKey, const QVariant &value)
     {
         QString key = iCalKey.toLower().replace(QChar('-'), QChar('_'));
-        qDebug() << key << value;
         m_properties.insert(key, value);
     }
 
