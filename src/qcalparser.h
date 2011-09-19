@@ -24,6 +24,7 @@
 #include "libqcalparser_global.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QSharedPointer>
 
 class QCalEvent;
 class QFile;
@@ -31,21 +32,21 @@ class QTextStream;
 
 class LIBQCALPARSERSHARED_EXPORT QCalParser : public QObject {
     Q_OBJECT
-
 public:
     QCalParser(QObject *parent = 0);
     ~QCalParser();
 
+    QList<QSharedPointer<QCalEvent> > eventList();
+
+public slots:
     bool parse(const QByteArray &data);
     bool parse(QFile *file);
-
-    QList<QCalEvent *> eventList();
 
 private:
     void parse();
     void parseBlock();
 
-    QList<QCalEvent *> m_eventList;
+    QList<QSharedPointer<QCalEvent> > m_eventList;
     QTextStream *m_dataStream;
 };
 

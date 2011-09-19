@@ -22,7 +22,6 @@
 #include "qcalparser.h"
 
 #include <QtCore/QDateTime>
-#include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
@@ -78,7 +77,7 @@ void QCalParser::parse()
 
 void QCalParser::parseBlock()
 {
-    QCalEvent *event = new QCalEvent(this);
+    QSharedPointer<QCalEvent> event = QSharedPointer<QCalEvent>(new QCalEvent);
     QString line;
     while (!(line = m_dataStream->readLine()).contains(QByteArray("END:VEVENT"))) {
         const int deliminatorPosition = line.indexOf(QLatin1Char(':'));
@@ -97,7 +96,7 @@ void QCalParser::parseBlock()
     m_eventList.append(event);
 }
 
-QList <QCalEvent *> QCalParser::eventList()
+QList<QSharedPointer<QCalEvent> > QCalParser::eventList()
 {
     return m_eventList;
 }
