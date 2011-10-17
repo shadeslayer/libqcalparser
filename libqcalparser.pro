@@ -19,22 +19,3 @@ HEADERS += \
     $$PWD/src/qcalparser.h\
     $$PWD/src/libqcalparser_global.h \
     $$PWD/src/qcalevent.h
-
-symbian {
-    MMP_RULES += EXPORTUNFROZEN
-    TARGET.UID3 = 0xEA3EFA30
-    TARGET.CAPABILITY =
-    TARGET.EPOCALLOWDLLDATA = 1
-    addFiles.sources = libqcalparser.dll
-    addFiles.path = !:/sys/bin
-    DEPLOYMENT += addFiles
-}
-
-unix:!symbian {
-    maemo5 {
-        target.path = /opt/usr/lib
-    } else {
-        target.path = /usr/lib
-    }
-    INSTALLS += target
-}
