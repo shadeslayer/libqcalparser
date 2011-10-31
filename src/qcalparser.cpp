@@ -85,7 +85,9 @@ void QCalParser::parseBlock()
         const QString value = line.mid(deliminatorPosition + 1, -1);
 
         if (key == QLatin1String("DTSTART") || key == QLatin1String("DTEND")) {
-            event->setProperty(key, QDateTime::fromString(value, "yyyyMMdd'T'hhmmss'Z'"));
+            QDateTime utcTime = QDateTime::fromString(value, "yyyyMMdd'T'hhmmss'Z'");
+            utcTime.setTimeSpec(Qt::UTC);
+            event->setProperty(key, utcTime.toLocalTime());
             continue;
         } else if (key == QLatin1String("CATEGORIES")) {
             event->setProperty(key, value.split(" " || ",", QString::SkipEmptyParts));
